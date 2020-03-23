@@ -9,21 +9,39 @@
 import UIKit
 import SpriteKit
 import GameplayKit
+import AVFoundation
 
 class GameViewController: UIViewController {
 
+    var backingAudio = AVAudioPlayer()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        //Playing a track
+        //Backing Audio - this is the name of the file
+        let filePath = Bundle.main.path(forResource: "BackingAudio", ofType: "mp3")
+        let audioNSURL = NSURL(fileURLWithPath: filePath!)
+        
+        do { backingAudio = try AVAudioPlayer(contentsOf: audioNSURL as URL) }
+        catch { return print("Cannot Find Audio") }
+        
+        backingAudio.numberOfLoops = -1
+        backingAudio.play()
+        //---------------end playing track-----------------
         
         if let view = self.view as! SKView? {
             // Load the SKScene from 'GameScene.sks'
-            if let scene = SKScene(fileNamed: "GameScene") {
+         //  let scene = SKScene(fileNamed: "MainMenuScene")
+            // if let scene = SKScene(fileNamed: "MainMenuScene") {
+               let scene = MainMenuScene(size: CGSize(width: 1048, height: 2048))
+
                 // Set the scale mode to scale to fit the window
-                scene.scaleMode = .aspectFill
+            scene.scaleMode = .aspectFill
                 
                 // Present the scene
                 view.presentScene(scene)
-            }
+        //    }
+            
             
             view.ignoresSiblingOrder = true
             
